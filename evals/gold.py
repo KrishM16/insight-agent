@@ -1,0 +1,28 @@
+"""Gold questions with reference SQL. The reference result is the ground truth."""
+
+GOLD = [
+    ("Which region has the most customers?",
+     "SELECT region, COUNT(*) c FROM customers GROUP BY region ORDER BY c DESC LIMIT 1"),
+    ("How many orders were cancelled?",
+     "SELECT COUNT(*) FROM orders WHERE status='cancelled'"),
+    ("What is total revenue from completed orders?",
+     "SELECT ROUND(SUM(o.quantity*p.unit_price),2) FROM orders o JOIN products p USING(product_id) WHERE o.status='completed'"),
+    ("How many customers are in the Enterprise segment?",
+     "SELECT COUNT(*) FROM customers WHERE segment='Enterprise'"),
+    ("Which product category has the highest average unit price?",
+     "SELECT category, ROUND(AVG(unit_price),2) a FROM products GROUP BY category ORDER BY a DESC LIMIT 1"),
+    ("How many orders were placed in 2025?",
+     "SELECT COUNT(*) FROM orders WHERE order_date LIKE '2025%'"),
+    ("What is the return rate as a percentage of all orders?",
+     "SELECT ROUND(100.0*SUM(CASE WHEN status='returned' THEN 1 ELSE 0 END)/COUNT(*),2) FROM orders"),
+    ("Which region generates the most revenue from completed orders?",
+     "SELECT c.region, ROUND(SUM(o.quantity*p.unit_price),2) r FROM orders o JOIN customers c USING(customer_id) JOIN products p USING(product_id) WHERE o.status='completed' GROUP BY c.region ORDER BY r DESC LIMIT 1"),
+    ("How many distinct customers placed at least one order?",
+     "SELECT COUNT(DISTINCT customer_id) FROM orders"),
+    ("What is the average order quantity?",
+     "SELECT ROUND(AVG(quantity),3) FROM orders"),
+    ("How many customers signed up in 2024?",
+     "SELECT COUNT(*) FROM customers WHERE signup_date LIKE '2024%'"),
+    ("Which segment has the highest average revenue per customer from completed orders?",
+     "SELECT c.segment, ROUND(SUM(o.quantity*p.unit_price)/COUNT(DISTINCT c.customer_id),2) r FROM orders o JOIN customers c USING(customer_id) JOIN products p USING(product_id) WHERE o.status='completed' GROUP BY c.segment ORDER BY r DESC LIMIT 1"),
+]
